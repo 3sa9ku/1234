@@ -26,7 +26,7 @@ public class MainActivity5 extends AppCompatActivity {
 
     private ActivityMain5Binding binding;
 
-    private final OkHttpClient okHttpClient = new OkHttpClient();
+
     private final Moshi moshi = new Moshi.Builder().build();
     private final JsonAdapter<Gist> gistJsonAdapter = moshi.adapter(Gist.class);
 
@@ -47,20 +47,6 @@ public class MainActivity5 extends AppCompatActivity {
                 .url("https://mura.github.io/meijou-android-sample/gist.json")
                 .build();
 
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-            }
 
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                var gist = gistJsonAdapter.fromJson(response.body().source());
-                Optional.ofNullable(gist)
-                        .map(g -> g.files.get("OkHttp.txt"))
-                        .ifPresent(gistFile ->
-                                runOnUiThread(() -> binding.textView.setText(gistFile.content))
-                        );
-            }
-        });
     }
 }
